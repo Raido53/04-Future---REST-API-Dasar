@@ -1,0 +1,114 @@
+name: GitHub Classroom Autograding
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  autograding:
+    name: Flutter Autograding Evaluation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Mahasiswa Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java Environment (JDK 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Verifikasi Flutter SDK
+        run: flutter doctor -v
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Test 1: Static Analysis
+      - name: 1. Dart Static Analysis
+        id: test-analysis
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "1. Dart Code Formatting & Static Analysis"
+          setup-command: "flutter pub get"
+          command: "flutter analyze --no-fatal-infos"
+          timeout: 3
+          max-score: 15
+
+      # Test 2: Modul 01 Test
+      - name: 2. Modul 01 Tests
+        id: test-modul-01
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "2. Modul 01: Flutter Setup & ProfileScreen Widget Test"
+          setup-command: "flutter pub get"
+          command: "flutter test test/modul_01_test.dart"
+          timeout: 3
+          max-score: 20
+
+      # Test 3: Modul 02 Test
+      - name: 3. Modul 02 Tests
+        id: test-modul-02
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "3. Modul 02: Declarative UI & Responsive Layout Test"
+          setup-command: "flutter pub get"
+          command: "flutter test test/modul_02_test.dart"
+          timeout: 3
+          max-score: 20
+
+      # Test 4: Modul 03 Test
+      - name: 4. Modul 03 Tests
+        id: test-modul-03
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "4. Modul 03: Navigation & Riverpod State Management Test"
+          setup-command: "flutter pub get"
+          command: "flutter test test/modul_03_test.dart"
+          timeout: 3
+          max-score: 20
+
+      # Test 5: Modul 04 Test
+      - name: 5. Modul 04 Tests
+        id: test-modul-04
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "5. Modul 04: Networking REST API & Dio Test"
+          setup-command: "flutter pub get"
+          command: "flutter test test/modul_04_test.dart"
+          timeout: 3
+          max-score: 15
+
+      # Test 6: Documentation Check
+      - name: 6. Documentation & Identity Check
+        id: test-doc
+        uses: education/autograding-command-grader@v1
+        with:
+          test-name: "6. Verifikasi Kelengkapan Identitas README.md"
+          setup-command: "flutter pub get"
+          command: "flutter test test/verify_documentation_test.dart"
+          timeout: 2
+          max-score: 10
+
+      # Score Reporter
+      - name: Autograding Score Reporter
+        uses: education/autograding-grading-reporter@v1
+        if: always()
+        with:
+          runners: test-analysis,test-modul-01,test-modul-02,test-modul-03,test-modul-04,test-doc

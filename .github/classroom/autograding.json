@@ -1,0 +1,32 @@
+{
+  "tests": [
+    {
+      "name": "1. Dart Code Formatting & Static Analysis",
+      "setup-command": "flutter pub get",
+      "command": "flutter analyze --no-fatal-infos",
+      "timeout": 3,
+      "points": 20
+    },
+    {
+      "name": "2. Modul 01: Flutter Setup & ProfileScreen Widget Test",
+      "setup-command": "flutter pub get",
+      "command": "flutter test test/modul_01_test.dart",
+      "timeout": 3,
+      "points": 35
+    },
+    {
+      "name": "3. Modul 02: Declarative UI & Responsive Layout Test",
+      "setup-command": "flutter pub get",
+      "command": "flutter test test/modul_02_test.dart",
+      "timeout": 3,
+      "points": 35
+    },
+    {
+      "name": "4. Verifikasi Kelengkapan Identitas README.md",
+      "setup-command": "flutter pub get",
+      "command": "flutter test test/verify_documentation_test.dart",
+      "timeout": 2,
+      "points": 10
+    }
+  ]
+}
